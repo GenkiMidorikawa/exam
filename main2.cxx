@@ -4,7 +4,7 @@
 #include<sstream>
 #include<vector>
 
-std::string LogFileName = "log1.txt";
+std::string LogFileName = "log2.txt";
 
 void printDate(std::string date){
     std::string unit = "/ :: ";
@@ -27,6 +27,10 @@ int main(void){
     //IPのリスト
     std::vector<std::string> IPs(0);
     int i = 0;
+    int timeoutLimit; //N
+
+    std::cout << "タイムアウト上限数: ";
+    std::cin >> timeoutLimit;
 
     //IPリストの作成
     std::ifstream ifs(LogFileName);
@@ -59,6 +63,8 @@ int main(void){
 
     //故障期間を調べる
     for(i = 0; i < IPs.size(); i++){
+        int timeoutNum = 0;
+        std::string tmp_date;
         bool accidentFlag = false;
         bool noAccident = true;
         //ファイル先頭に戻る
@@ -77,15 +83,21 @@ int main(void){
             if(IPs[i] == logdata[1]){
                 //故障が始まったか判定
                 if(logdata[2] == "-" && !accidentFlag){
-                    accidentFlag = true;
-                    if(noAccident){
-                        noAccident = false;
-                        std::cout << "\nIP: " << logdata[1]
-                                  << "\n故障期間:";
+                    timeoutNum++;
+                    if(timeoutNum == 1)
+                        tmp_date = logdata[0];
+                    if(timeoutNum == timeoutLimit){
+                        accidentFlag = true;
+                        if(noAccident){
+                            noAccident = false;
+                            std::cout << "\nIP: " << logdata[1]
+                                    << "\n故障期間:";
+                        }
+                        std::cout << "\n";
+                        printDate(tmp_date);
+                        std::cout << "～ ";
+                        timeoutNum = 0;
                     }
-                    std::cout << "\n";
-                    printDate(logdata[0]);
-                    std::cout << "～ ";
                 }
 
                 //故障が終わったか判定
@@ -95,6 +107,7 @@ int main(void){
                 }
             }
         }
+        timeoutNum = 0;
         std::cout << "\n";
     }
 }
