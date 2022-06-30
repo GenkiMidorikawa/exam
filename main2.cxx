@@ -29,7 +29,7 @@ int main(void){
     int i = 0;
     int timeoutLimit; //N
 
-    std::cout << "タイムアウト上限数N: ";
+    std::cout << "故障と判断するタイムアウト数N: ";
     std::cin >> timeoutLimit;
 
     //IPリストの作成
