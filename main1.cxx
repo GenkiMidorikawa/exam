@@ -2,21 +2,22 @@
 #include<fstream>
 #include<string>
 #include<sstream>
+#include<vector>
 
 std::string LogFileName = "log1.txt";
 
 void printDate(std::string date){
-    std::string unit = "月日時分秒";
+    std::string unit = "/ :: ";
     int i;
 
     for(i = 0; i < date.length() - 10; i++){
         std::cout << date[i];
     }
-    std::cout << "年";
+    std::cout << "/";
 
     for(int j = 0; j < 5; j++){
         for(int k = 0; k < 2; k++)
-            std::cout << date[i+j+k];
+            std::cout << date[i + (j*2) + k];
         std::cout << unit[j];
     }
 }
@@ -24,7 +25,7 @@ void printDate(std::string date){
 int main(void){
     std::string str, logdata[3];
     //IPのリスト
-    std::string* IPs;
+    std::vector<std::string> IPs(0);
     int i = 0;
 
     //IPリストの作成
@@ -38,27 +39,35 @@ int main(void){
         std::string strtmp;
         std::istringstream stream(str);
         int j = 0;
+        bool newFlag = true;
 
         while(getline(stream, strtmp, ',')){
             logdata[j] = strtmp;
             j++;
         }
 
-        IPs[i] = logdata[1];
-        i++;
+        for(j = 0; j < IPs.size(); j++){
+            if(IPs[j] == logdata[1])
+                newFlag = false;
+        }
+
+        if(newFlag){
+            IPs.push_back(logdata[1]);
+            i++;
+        }
     }
-    i = 0;
 
     //故障期間を調べる
-    for(i = 0; i < sizeof(IPs) / sizeof(std::string); i++){
+    for(i = 0; i < IPs.size(); i++){
+        bool accidentFlag = false;
+        bool noAccident = true;
         //ファイル先頭に戻る
+        ifs.clear();
         ifs.seekg(0, std::ios_base::beg);
         while(getline(ifs, str)){
             std::string strtmp;
             std::istringstream stream(str);
             int j = 0;
-            bool accidentFlag = false;
-            bool noAccident = true;
 
             while(getline(stream, strtmp, ',')){
                 logdata[j] = strtmp;
@@ -71,21 +80,21 @@ int main(void){
                     accidentFlag = true;
                     if(noAccident){
                         noAccident = false;
-                        std::cout << "IP: " << logdata[1]
+                        std::cout << "\nIP: " << logdata[1]
                                   << "\n故障期間:";
                     }
                     std::cout << "\n";
                     printDate(logdata[0]);
-                    std::cout << " ～ ";
+                    std::cout << "～ ";
                 }
 
                 //故障が終わったか判定
-                if(accidentFlag && logdata[2] != "-"){
+                if(accidentFlag && !(logdata[2] == "-")){
                     printDate(logdata[0]);
+                    accidentFlag = false;
                 }
             }
-            i++;
         }
-        std::cout << "\n";
+    std::cout << "\n";
     }
 }
