@@ -50,11 +50,11 @@ int main(void){
             j++;
         }
 
+        //IPリストに無ければ追加
         for(j = 0; j < IPs.size(); j++){
             if(IPs[j] == logdata[1])
                 newFlag = false;
         }
-
         if(newFlag){
             IPs.push_back(logdata[1]);
             i++;
