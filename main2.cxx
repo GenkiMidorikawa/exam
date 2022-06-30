@@ -90,7 +90,7 @@ int main(void){
                         accidentFlag = true;
                         if(noAccident){
                             noAccident = false;
-                            std::cout << "\nIP: " << logdata[1]
+                            std::cout << "\n\nIP: " << logdata[1]
                                     << "\n故障期間:";
                         }
                         std::cout << "\n";
@@ -108,6 +108,5 @@ int main(void){
             }
         }
         timeoutNum = 0;
-        std::cout << "\n";
     }
 }
