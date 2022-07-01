@@ -87,7 +87,7 @@ int main(void){
                 }
 
                 //故障が終わったか判定
-                if(timeoutFlag && !(logdata[2] == "-")){
+                if(timeoutFlag && logdata[2] != "-"){
                     printDate(logdata[0]);
                     timeoutFlag = false;
                 }
