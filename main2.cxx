@@ -26,7 +26,6 @@ int main(void){
     std::string str, logdata[3];
     //IPのリスト
     std::vector<std::string> IPs(0);
-    int i = 0;
     int timeoutLimit; //N
 
     std::cout << "故障と判断するタイムアウト数N: ";
@@ -42,27 +41,26 @@ int main(void){
     while(getline(ifs, str)){
         std::string strtmp;
         std::istringstream stream(str);
-        int j = 0;
+        int i = 0;
         bool newFlag = true;
 
         while(getline(stream, strtmp, ',')){
-            logdata[j] = strtmp;
-            j++;
+            logdata[i] = strtmp;
+            i++;
         }
 
         //IPリストに無ければ追加
-        for(j = 0; j < IPs.size(); j++){
-            if(IPs[j] == logdata[1])
+        for(i = 0; i < IPs.size(); i++){
+            if(IPs[i] == logdata[1])
                 newFlag = false;
         }
         if(newFlag){
             IPs.push_back(logdata[1]);
-            i++;
         }
     }
 
     //故障期間を調べる
-    for(i = 0; i < IPs.size(); i++){
+    for(int i = 0; i < IPs.size(); i++){
         int timeoutNum = 0;
         std::string tmp_date;
         bool timeoutFlag = false;
