@@ -69,7 +69,7 @@ int main(void){
     for(i = 0; i < IPs.size(); i++){
         int timeoutNum = 0;
         std::string tmp_date_timeout, tmp_date_slow;
-        bool accidentFlag = false;
+        bool timeoutFlag = false;
         bool noTimeout = true;
         bool overloadFlag = false;
         bool noOverload = true;
@@ -133,7 +133,7 @@ int main(void){
                 }
 
                 //故障が始まったか判定
-                if(logdata[2] == "-" && !accidentFlag){
+                if(logdata[2] == "-" && !timeoutFlag){
                     //過負荷状態からそのまま故障するケース
                     if(overloadFlag){
                         printDate(tmp_date_slow);
@@ -143,7 +143,7 @@ int main(void){
                     if(timeoutNum == 1)
                         tmp_date_timeout = logdata[0];
                     if(timeoutNum == timeoutLimit){
-                        accidentFlag = true;
+                        timeoutFlag = true;
                         if(noTimeout){
                             noTimeout = false;
                             noOverload = true;
@@ -161,9 +161,9 @@ int main(void){
                 }
 
                 //故障が終わったか判定
-                if(accidentFlag && !(logdata[2] == "-")){
+                if(timeoutFlag && !(logdata[2] == "-")){
                     printDate(logdata[0]);
-                    accidentFlag = false;
+                    timeoutFlag = false;
                 }
             }
         }

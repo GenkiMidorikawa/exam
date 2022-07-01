@@ -65,7 +65,7 @@ int main(void){
     for(i = 0; i < IPs.size(); i++){
         int timeoutNum = 0;
         std::string tmp_date;
-        bool accidentFlag = false;
+        bool timeoutFlag = false;
         bool noAccident = true;
         //ファイル先頭に戻る
         ifs.clear();
@@ -82,12 +82,12 @@ int main(void){
 
             if(IPs[i] == logdata[1]){
                 //故障が始まったか判定
-                if(logdata[2] == "-" && !accidentFlag){
+                if(logdata[2] == "-" && !timeoutFlag){
                     timeoutNum++;
                     if(timeoutNum == 1)
                         tmp_date = logdata[0];
                     if(timeoutNum == timeoutLimit){
-                        accidentFlag = true;
+                        timeoutFlag = true;
                         if(noAccident){
                             noAccident = false;
                             std::cout << "\n\nIP: " << logdata[1]
@@ -101,9 +101,9 @@ int main(void){
                 }
 
                 //故障が終わったか判定
-                if(accidentFlag && !(logdata[2] == "-")){
+                if(timeoutFlag && !(logdata[2] == "-")){
                     printDate(logdata[0]);
-                    accidentFlag = false;
+                    timeoutFlag = false;
                 }
             }
         }

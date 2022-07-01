@@ -59,7 +59,7 @@ int main(void){
 
     //故障期間を調べる
     for(i = 0; i < IPs.size(); i++){
-        bool accidentFlag = false;
+        bool timeoutFlag = false;
         bool noAccident = true;
         //ファイル先頭に戻る
         ifs.clear();
@@ -76,8 +76,8 @@ int main(void){
 
             if(IPs[i] == logdata[1]){
                 //故障が始まったか判定
-                if(logdata[2] == "-" && !accidentFlag){
-                    accidentFlag = true;
+                if(logdata[2] == "-" && !timeoutFlag){
+                    timeoutFlag = true;
                     if(noAccident){
                         noAccident = false;
                         std::cout << "\n\nIP: " << logdata[1]
@@ -89,9 +89,9 @@ int main(void){
                 }
 
                 //故障が終わったか判定
-                if(accidentFlag && !(logdata[2] == "-")){
+                if(timeoutFlag && !(logdata[2] == "-")){
                     printDate(logdata[0]);
-                    accidentFlag = false;
+                    timeoutFlag = false;
                 }
             }
         }
