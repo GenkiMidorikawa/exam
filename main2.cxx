@@ -79,11 +79,17 @@ int main(void){
             }
 
             if(IPs[i] == logdata[1]){
+                if(logdata[2] != "-"){
+                    //タイムアウトのカウントリセット
+                    timeoutNum = 0;
+                }
+
                 //故障が始まったか判定
                 if(logdata[2] == "-" && !timeoutFlag){
                     timeoutNum++;
-                    if(timeoutNum == 1)
+                    if(timeoutNum == 1){
                         tmp_date = logdata[0];
+                    }
                     if(timeoutNum == timeoutLimit){
                         timeoutFlag = true;
                         if(noAccident){
@@ -99,12 +105,11 @@ int main(void){
                 }
 
                 //故障が終わったか判定
-                if(timeoutFlag && !(logdata[2] == "-")){
+                if(timeoutFlag && logdata[2] != "-"){
                     printDate(logdata[0]);
                     timeoutFlag = false;
                 }
             }
         }
-        timeoutNum = 0;
     }
 }

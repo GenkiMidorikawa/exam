@@ -94,6 +94,8 @@ int main(void){
                 } else {
                     //直近m回のpingを保持
                     ping.push_back(std::stoi(logdata[2]));
+                    //タイムアウトのカウントリセット
+                    timeoutNum = 0;
                 }
                 //mより要素数が多ければ先頭の要素消去
                 if(ping.size() > slowNum)
@@ -159,12 +161,11 @@ int main(void){
                 }
 
                 //故障が終わったか判定
-                if(timeoutFlag && !(logdata[2] == "-")){
+                if(timeoutFlag && logdata[2] != "-"){
                     printDate(logdata[0]);
                     timeoutFlag = false;
                 }
             }
         }
-        timeoutNum = 0;
     }
 }
