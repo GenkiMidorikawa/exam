@@ -132,15 +132,13 @@ int main(void){
                     }
                 }
 
-                //過負荷状態からそのまま故障するケース
-                if(overloadFlag && logdata[2] == "-"){
-                    printDate(tmp_date_slow);
-                    overloadFlag = false;
-                }
-
                 //故障が始まったか判定
                 if(logdata[2] == "-" && !accidentFlag){
-                    ping.clear();
+                    //過負荷状態からそのまま故障するケース
+                    if(overloadFlag){
+                        printDate(tmp_date_slow);
+                        overloadFlag = false;
+                    }
                     timeoutNum++;
                     if(timeoutNum == 1)
                         tmp_date_timeout = logdata[0];
