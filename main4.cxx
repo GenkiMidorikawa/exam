@@ -97,13 +97,12 @@ int main(void){
     }
 
     while(getline(ifs, str)){
-        std::string strtmp, IPtmp;
+        std::string IPtmp;
         std::istringstream stream(str);
         int i = 0;
         bool newFlag = true;
 
-        while(getline(stream, strtmp, ',')){
-            logdata[i] = strtmp;
+        while(getline(stream, logdata[i], ',')){
             i++;
         }
 

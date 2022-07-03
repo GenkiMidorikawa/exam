@@ -4,8 +4,6 @@
 #include<sstream>
 #include<vector>
 
-std::string LogFileName = "log1.txt";
-
 void printDate(std::string date){
     std::string unit = "/ :: ";
     int i;
@@ -23,6 +21,7 @@ void printDate(std::string date){
 }
 
 int main(void){
+    std::string LogFileName = "log1.txt";
     std::string str, logdata[3];
     //IPのリスト
     std::vector<std::string> IPs(0);
@@ -35,13 +34,11 @@ int main(void){
     }
 
     while(getline(ifs, str)){
-        std::string strtmp;
         std::istringstream stream(str);
         int i = 0;
         bool newFlag = true;
 
-        while(getline(stream, strtmp, ',')){
-            logdata[i] = strtmp;
+        while(getline(stream, logdata[i], ',')){
             i++;
         }
 
@@ -58,7 +55,7 @@ int main(void){
     //故障期間を調べる
     for(int i = 0; i < IPs.size(); i++){
         bool timeoutFlag = false;
-        bool noAccident = true;
+        bool noTimeout = true;
         //ファイル先頭に戻る
         ifs.clear();
         ifs.seekg(0, std::ios_base::beg);
@@ -76,8 +73,8 @@ int main(void){
                 //故障が始まったか判定
                 if(logdata[2] == "-" && !timeoutFlag){
                     timeoutFlag = true;
-                    if(noAccident){
-                        noAccident = false;
+                    if(noTimeout){
+                        noTimeout = false;
                         std::cout << "\n\nIP: " << logdata[1]
                                   << "\n故障期間:";
                     }

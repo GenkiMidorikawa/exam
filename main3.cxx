@@ -4,8 +4,6 @@
 #include<sstream>
 #include<vector>
 
-std::string LogFileName = "log3.txt";
-
 void printDate(std::string date){
     std::string unit = "/ :: ";
     int i;
@@ -23,6 +21,7 @@ void printDate(std::string date){
 }
 
 int main(void){
+    std::string LogFileName = "log3.txt";
     std::string str, logdata[3];
     //IPのリスト
     std::vector<std::string> IPs(0);
@@ -43,16 +42,13 @@ int main(void){
     }
 
     while(getline(ifs, str)){
-        std::string strtmp;
         std::istringstream stream(str);
         int i = 0;
         bool newFlag = true;
 
-        while(getline(stream, strtmp, ',')){
-            logdata[i] = strtmp;
+        while(getline(stream, logdata[i], ',')){
             i++;
         }
-
         //IPリストに無ければ追加
         for(i = 0; i < IPs.size(); i++){
             if(IPs[i] == logdata[1])
